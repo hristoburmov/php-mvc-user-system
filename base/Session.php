@@ -3,6 +3,11 @@
 class Session
 {
 
+	public function __construct()
+	{
+		
+	}
+
 	public static function get($key)
 	{
 		if(isset($_SESSION[$key]))

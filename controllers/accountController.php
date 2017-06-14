@@ -8,6 +8,15 @@ class Account extends Controller
 		parent::__construct();
 	}
 
+	// DASHBOARD
+	public function dashboard()
+	{
+		if(Helper::auth(false))
+			Helper::redirect(URL . LOGIN);
+		$this->view->title = 'Dashbaord';
+		$this->view->render('account/dashboard');
+	}
+
 	// LOGIN
 	public function login()
 	{

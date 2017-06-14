@@ -17,28 +17,36 @@ class UsersModel extends Model
 	// CREATE
 	public function create()
 	{
-		$query = $this->db->sql('SELECT user, email FROM users WHERE user = :user OR email = :email', array(
-			':user' => $_POST['user'],
-			':email' => $_POST['email']
+		$validate = Helper::validate(array(
+			'user' => $_POST['user'],
+			'email' => $_POST['email'],
+			'pass' => $_POST['pass']
 		));
-
-		// Insert new user into the database
-		if(!Helper::exist($query))
+		if($validate)
 		{
-			$query = $this->db->insert('users', array(
-				'user' => $_POST['user'],
-				'pass' => password_hash($_POST['pass'], PASSWORD_DEFAULT),
-				'email' => $_POST['email'],
-				'role' => $_POST['role']
+			$query = $this->db->sql('SELECT user, email FROM users WHERE user = :user OR email = :email', array(
+				':user' => $_POST['user'],
+				':email' => $_POST['email']
 			));
 
-			if(empty($query->errorInfo()[2]))
+			// Insert new user into the database
+			if(!Helper::exist($query))
 			{
-				Helper::message('success', 'New user has been CREATED');
-				Helper::redirect(URL . USERS);
+				$query = $this->db->insert('users', array(
+					'user' => $_POST['user'],
+					'pass' => password_hash($_POST['pass'], PASSWORD_DEFAULT),
+					'email' => $_POST['email'],
+					'role' => $_POST['role']
+				));
+
+				if(empty($query->errorInfo()[2]))
+				{
+					Helper::message('success', 'New user has been CREATED');
+					Helper::redirect(URL . USERS);
+				}
+				else
+					Helper::message('error', $query->errorInfo()[2]);
 			}
-			else
-				Helper::message('error', $query->errorInfo()[2]);
 		}
 	}
 
@@ -59,36 +67,47 @@ class UsersModel extends Model
 		return $query->fetch(PDO::FETCH_ASSOC);
 	}
 
-	// (EDIT) UPDATE
+	// EDIT - UPDATE
 	public function update($id)
 	{
 		if($id == Session::get('id'))
 			Helper::redirect(URL . USERS);
-		$query = $this->db->sql('SELECT user, email FROM users WHERE (user = :user OR email = :email) AND id != :id', array(
-			':user' => $_POST['user'],
-			':email' => $_POST['email'],
-			':id' => $id
-		));
 
-		// Update existing user in the database
-		if(!Helper::exist($query))
+		$validateArray = array(
+			'user' => $_POST['user'],
+			'email' => $_POST['email']
+		);
+		if(!empty($_POST['pass']))
+			$validateArray['pass'] = $_POST['pass'];
+		$validate = Helper::validate($validateArray);
+		if($validate)
 		{
-			$fields = array(
-				'user' => $_POST['user'],
-				'email' => $_POST['email'],
-				'role' => $_POST['role']
-			);
-			if(!empty($_POST['pass']))
-				$fields['pass'] = password_hash($_POST['pass'], PASSWORD_DEFAULT);
-			$query = $this->db->update('users', $fields, "id = $id");
+			$query = $this->db->sql('SELECT user, email FROM users WHERE (user = :user OR email = :email) AND id != :id', array(
+				':user' => $_POST['user'],
+				':email' => $_POST['email'],
+				':id' => $id
+			));
 
-			if(empty($query->errorInfo()[2]))
+			// Update existing user in the database
+			if(!Helper::exist($query))
 			{
-				Helper::message('success', 'User has been UPDATED');
-				Helper::redirect(URL . USERS);
+				$fields = array(
+					'user' => $_POST['user'],
+					'email' => $_POST['email'],
+					'role' => $_POST['role']
+				);
+				if(!empty($_POST['pass']))
+					$fields['pass'] = password_hash($_POST['pass'], PASSWORD_DEFAULT);
+				$query = $this->db->update('users', $fields, "id = $id");
+
+				if(empty($query->errorInfo()[2]))
+				{
+					Helper::message('success', 'User has been UPDATED');
+					Helper::redirect(URL . USERS);
+				}
+				else
+					Helper::message('error', $query->errorInfo()[2]);
 			}
-			else
-				Helper::message('error', $query->errorInfo()[2]);
 		}
 	}
 

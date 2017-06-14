@@ -3,7 +3,8 @@
 // URLs
 define('URL', 'http://localhost/mvc-user-system/'); // http://178.75.255.150/mvc-user-system/
 define('LOGIN', 'account/login');
-define('DASHBOARD', 'dashboard/');
+define('DASHBOARD', 'account/dashboard');
+define('NOTES', 'notes/');
 define('USERS', 'users/');
 
 // Paths
@@ -16,7 +17,7 @@ define('VIEW', 'views/');
 define('DB_TYPE', 'mysql');
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
-define('DB_PASS', ''); // Br68aJN1fQ12
+define('DB_PASS', '');
 define('DB_NAME', 'mvc-user-system');
 
 // Autoloader

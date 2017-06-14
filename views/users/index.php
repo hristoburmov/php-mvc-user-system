@@ -25,8 +25,8 @@
 		echo '<td>' . $user['role'] . '</td>';
 		echo '<td>' . $user['email'] . '</td>';
 		if(Helper::auth(true, 'admin') && Session::get('id') != $user['id']):
-			echo '<td><a href="' . URL . 'users/edit/' . $user['id'] . '">Edit</a></td>';
-			echo '<td><a href="' . URL . 'users/delete/' . $user['id'] . '">Delete</a></td>';
+			echo '<td><a href="' . URL . USERS . 'edit/' . $user['id'] . '">Edit</a></td>';
+			echo '<td><a href="' . URL . USERS . 'delete/' . $user['id'] . '">Delete</a></td>';
 		else:
 			echo '<td colspan="2"></td>';
 		endif;
