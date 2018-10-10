@@ -1,7 +1,7 @@
 <?php
 
 // URLs
-define('URL', 'http://localhost/mvc-user-system/'); // http://178.75.255.150/mvc-user-system/
+define('URL', 'https://burmov.eu/demos/mvc-user-system/');
 define('LOGIN', 'account/login');
 define('DASHBOARD', 'account/dashboard');
 define('NOTES', 'notes/');
@@ -18,7 +18,7 @@ define('DB_TYPE', 'mysql');
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '');
-define('DB_NAME', 'mvc-user-system');
+define('DB_NAME', 'mvc_user_system');
 
 // Autoloader
 spl_autoload_register(function($class) {
